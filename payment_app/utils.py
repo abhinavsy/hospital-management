@@ -1,18 +1,29 @@
-import razorpay
-import random
+import uuid
+from abc import ABC, abstractmethod
+from decimal import ROUND_HALF_UP, Decimal
 
-class RazorPayPayment:
 
-    client_id = "CLIENT KEY"
-    secret_key = "SECRET KEY"
+class PaymentGateway(ABC):
 
-    def __init__(self,amount,customer_id) :
-        self.amount = amount
-        self.customer_id = customer_id
+    @abstractmethod
+    def create_payment_order(self, amount, currency, order_id, payment_id):
+        raise NotImplementedError
+
+    @abstractmethod
+    def verify_payment(self, payment_data: dict):
+        raise NotImplementedError
+
+    @staticmethod
+    def create_order_id(patient_id):
+        """To create orderid for razorpay transactions"""
+        return f"patient_{patient_id}_{uuid.uuid4().hex[:12]}"
+
     @staticmethod
     def convert_inr_to_subunits(amount):
-        return amount *100
-
-    # @staticmethod
-    # def create_order_id():
-    #     return random.
+        """To convert Rupees to in range or paisa"""
+        return int(
+            (amount * 100).quantize(
+                Decimal(1),
+                rounding=ROUND_HALF_UP,
+            )
+        )

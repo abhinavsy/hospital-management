@@ -51,7 +51,7 @@ class PaytmGateway(PaymentGateway):
             settings.PAYTM_MID,
             settings.PAYTM_MERCHANT_KEY,
             settings.PAYTM_CLIENT_ID,
-            settings.PAYTM,
+            settings.PAYTM_WEBSITE,
         )
         cls._initialized = True
 

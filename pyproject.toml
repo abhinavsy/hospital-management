@@ -14,6 +14,7 @@ dependencies = [
     "djangorestframework-simplejwt>=5.5.1",
     "mypy>=2.3.0",
     "paytm-pg>=1.1.2",
+    "phonepe-pg-sdk-python>=2.3.0",
     "pytest>=9.1.1",
     "razorpay>=2.0.1",
     "ruff>=0.16.2",

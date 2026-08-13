@@ -1,12 +1,13 @@
 # Create your views here.
-from rest_framework.permissions import BasePermission, IsAuthenticated
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import BasePermission, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from core.models import Patient, Payment
 from payment_app.services.payment_service import PaymentService
 from payment_app.services.paytm_pg_service import PaytmGateway
-from core.models import Patient, Payment
-from rest_framework.response import Response
-from rest_framework import status
 
 
 class CreatePaytmPaymentView(GenericAPIView):
@@ -31,7 +32,7 @@ class CreatePaytmPaymentView(GenericAPIView):
         return Response({"data": result})
 
 
-class VerifyPayment(GenericAPIView):
+class VerifyPaytmPaymentView(GenericAPIView):
 
     authentication_classes = []
     permission_classes = []
@@ -40,16 +41,33 @@ class VerifyPayment(GenericAPIView):
 
         cust_object = self.get_object()
         gateway = PaytmGateway()
+        service = PaymentService(gateway)
         payment_object = (
-            Payment.objects.filter(is_paid=False, is_refunded=False, patient_id=Patient)
+            Payment.objects.filter(
+                is_paid=False, is_refunded=False, patient_id=cust_object
+            )
             .order_by("-created_at")
             .first()
         )
 
-        response = gateway.verify_payment({"order_id": payment_object.order_id})
+        response = service.verify_payment({"order_id": payment_object.order_id})
         return Response(
             {
                 "data": response,
             },
             status.HTTP_200_OK,
         )
+
+
+class PaytmCallbackView(APIView):
+
+    def post(self, request):
+
+        order_id = request.POST.get("ORDERID")
+
+        gateway = PaytmGateway()
+
+        service = PaymentService(gateway)
+
+        response = service.verify_payment({"order_id": order_id})
+        return Response({"data": response})

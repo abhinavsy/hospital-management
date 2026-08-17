@@ -1,0 +1,8 @@
+Django>=5.2
+djangorestframework
+pytest>=9.1.1
+pytest-django
+ruff>=0.16.2
+razorpay>=2.0.1
+paytm-pg>=1.1.2
+phonepe-pg-sdk-python>=2.3.0

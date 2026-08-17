@@ -1,0 +1,45 @@
+name : CI
+
+on:
+  push : 
+    branches:
+        - main
+        - develop
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+
+    ruff:
+      name : Ruff
+      runs-on : ubuntu-latest
+      steps:
+          - name : Checkout Code
+            uses : actions/checkout@v4
+          - name: Build Container
+            run : docker compose build
+          - name : Run Ruff
+            run : docker compose run --rm web ruff check .
+
+    test : 
+        runs-on: ubuntu-latest
+
+        steps:
+            - name : Checkout Code
+              uses : actions/checkout@v4
+      
+            - name : Build Containers
+              run : docker compose build
+            
+            - name : Start Containers
+              run : docker compose up -d
+
+            - name : Run Tests
+              run : docker compose exec -T web pytest
+
+            - name : Stop Containers
+              if : always()
+              run : docker compose down

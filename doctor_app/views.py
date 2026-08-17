@@ -9,7 +9,7 @@ from core.serializers import PatientSerializer, PrescriptionSerializer
 from doctor_app.serializers import MyAppointmentSerializer, MyMedicalRecordSerializer
 
 
-class MyAppointmentViewSet(viewsets.ModelViewSet):
+class DoctorAppointmentViewSet(viewsets.ModelViewSet):
     """The doctor's own appointments: list/retrieve their assigned patients,
     and create/update to schedule ("appoint") or progress an appointment."""
 
@@ -52,7 +52,7 @@ class MyAppointmentViewSet(viewsets.ModelViewSet):
         return Response(PrescriptionSerializer(prescription).data, status=201)
 
 
-class MyPatientViewSet(viewsets.ReadOnlyModelViewSet):
+class DoctorPatientViewSet(viewsets.ReadOnlyModelViewSet):
     """Read-only: the patients this doctor has been appointed to."""
 
     serializer_class = PatientSerializer

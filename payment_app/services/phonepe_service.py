@@ -7,7 +7,6 @@ from phonepe.sdk.pg.payments.v2.standard_checkout_client import StandardCheckout
 
 from payment_app.utils import PaymentGateway
 
-
 class PhonePeGateway(PaymentGateway):
 
     def __init__(self):

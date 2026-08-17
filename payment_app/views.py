@@ -12,6 +12,9 @@ from payment_app.services.phonepe_service import PhonePeGateway
 
 
 class CreatePaytmPaymentView(GenericAPIView):
+    """
+    Paytm payment gateway order create view
+    """
 
     authentication_classes = []
     permission_classes = []

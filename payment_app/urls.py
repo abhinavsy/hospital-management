@@ -4,6 +4,8 @@ from .views import (
     CreatePaytmPaymentView,
     PaytmCallbackView,
     VerifyPaytmPaymentView,
+    CreatePhonePeView,
+    VerifyPhonePePayment
 )
 
 urlpatterns = [
@@ -22,4 +24,15 @@ urlpatterns = [
         PaytmCallbackView.as_view(),
         name="paytm-callback",
     ),
+    path(
+        "create-phonepe/",
+        CreatePhonePeView.as_view(),
+        name="create-phonepe-payment"
+
+    ),
+    path(
+        "verify-phonepe/",
+        VerifyPhonePePayment.as_view(),
+        name = "verify-phonepe-payment"
+    )
 ]
